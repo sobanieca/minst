@@ -1,0 +1,36 @@
+{
+    "name": "minst",
+    "version": "0.1.0",
+    "description": "Minimalistic state management",
+    "main": "index.js",
+    "type": "module",
+    "directories": {
+        "lib": "lib",
+        "test": "test"
+    },
+    "scripts": {
+        "start": "node --experimental-modules demo/index.js",
+        "test": "mocha --experimental-modules",
+        "lint": "eslint lib test",
+        "lint:fix": "eslint lib test --fix"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://sobanieca.visualstudio.com/DefaultCollection/minst/_git/minst"
+    },
+    "keywords": [
+        "state",
+        "management",
+        "minimalistic",
+        "vanillajs"
+    ],
+    "author": "Adam Sobaniec",
+    "license": "ISC",
+    "devDependencies": {
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.1",
+        "eslint-plugin-prettier": "^3.1.2",
+        "mocha": "^7.1.1",
+        "prettier": "^2.0.2"
+    }
+}
