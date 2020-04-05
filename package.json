@@ -1,12 +1,11 @@
 {
     "name": "minst",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Minimalistic state management",
-    "main": "index.js",
+    "main": "lib/stateManager.js",
     "type": "module",
     "directories": {
-        "lib": "lib",
-        "test": "test"
+        "lib": "lib"
     },
     "scripts": {
         "start": "node --experimental-modules demo/index.js",
@@ -16,7 +15,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://sobanieca.visualstudio.com/DefaultCollection/minst/_git/minst"
+        "url": "https://github.com/sobanieca/minst"
     },
     "keywords": [
         "state",
@@ -25,7 +24,7 @@
         "vanillajs"
     ],
     "author": "Adam Sobaniec",
-    "license": "ISC",
+    "license": "MIT",
     "devDependencies": {
         "eslint": "^6.8.0",
         "eslint-config-prettier": "^6.10.1",
