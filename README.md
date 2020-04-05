@@ -70,6 +70,7 @@ need to stick to current frameworks and tools.
 
 ```
 npm i
+npm run lint
 npm run test
 ```
 
