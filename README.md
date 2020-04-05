@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/sobanieca/minst.svg?branch=master)](https://travis-ci.com/sobanieca/minst)
+
 # Introduction 
 
 minst is a minimalistic state manager that is intended to be super simple to use 
