@@ -50,7 +50,9 @@ many time spent on learning and troubleshooting issues. For instance,
 state managers require you to define stores, commands, queries
 and introducing additional layers to your application. With ES6 Javascript 
 has changed significantly and it's possible to write complex
-applications without using complex tools.
+applications without using complex tools. However, it still lacks simple to
+use 'observable' capabilities and that's where minst is supposed to shine.
+It saves you from writing some boilerplate code.
 
 To summarize:
 
