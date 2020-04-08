@@ -168,4 +168,29 @@ describe("given testState", async function () {
       assert.equal(subscriptionCallCount, 1);
     });
   });
+
+  describe("when deleting state", function () {
+    it("should remove it's data and all subscriptions", function () {
+      let testState = stateManager.getState(
+        defaultStateName,
+        defaultWriterName
+      );
+
+      let subscriptionCallCount = 0;
+
+      stateManager.subscribe(defaultStateName, () => subscriptionCallCount++);
+
+      testState.numberField = 10;
+
+      stateManager.deleteState(defaultStateName);
+
+      testState = stateManager.getState(defaultStateName, defaultWriterName);
+
+      assert.equal(testState.numberField, undefined);
+
+      testState.anotherNumberField = 20;
+
+      assert.equal(subscriptionCallCount, 1);
+    });
+  });
 });
