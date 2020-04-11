@@ -195,10 +195,14 @@ describe("given testState", async function () {
   });
 
   describe("when getStates() is called", function () {
-    let testState1 = stateManager.getState(defaultStateName, defaultWriterName);
+    let testState1;
 
-    testState1.numberField = 10;
-    testState1.stringField = "abc";
+    beforeEach(function() {
+      testState1 = stateManager.getState(defaultStateName, defaultWriterName);
+
+      testState1.numberField = 10;
+      testState1.stringField = "abc";
+    });
 
     describe("with only 1 state", function () {
       it("should return object with 1 state", function () {
