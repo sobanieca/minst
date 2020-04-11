@@ -2,6 +2,8 @@
 
 # Introduction 
 
+(This project is "work in progress...")
+
 minst is a minimalistic state manager that is intended to be super simple to use 
 and avoid boilerplate code as much as possible. It is also supposed to utilize
 latest features of modern JavaScript language, thus it's not compatible with pre-ES6 
