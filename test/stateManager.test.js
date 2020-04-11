@@ -193,4 +193,48 @@ describe("given testState", async function () {
       assert.equal(subscriptionCallCount, 1);
     });
   });
+
+  describe("when getStates() is called", function () {
+    let testState1 = stateManager.getState(defaultStateName, defaultWriterName);
+
+    testState1.numberField = 10;
+    testState1.stringField = "abc";
+
+    describe("with only 1 state", function () {
+      it("should return object with 1 state", function () {
+        let states = stateManager.getStates();
+
+        assert.deepEqual(states, {
+          [defaultStateName]: {
+            numberField: 10,
+            stringField: "abc",
+          },
+        });
+      });
+    });
+
+    describe("with 2 states", function () {
+      it("should return object with 2 states", function () {
+        let defaultStateName2 = defaultStateName + "2";
+        let testState2 = stateManager.getState(
+          defaultStateName2,
+          defaultWriterName
+        );
+
+        testState2.numberField = 30;
+
+        let states = stateManager.getStates();
+
+        assert.deepEqual(states, {
+          [defaultStateName]: {
+            numberField: 10,
+            stringField: "abc",
+          },
+          [defaultStateName2]: {
+            numberField: 30,
+          },
+        });
+      });
+    });
+  });
 });
