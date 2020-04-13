@@ -131,7 +131,7 @@ describe("given testState", async function () {
     it("should throw an error", function () {
       assert.throws(() => {
         stateManager.getState({});
-      }, /Invalid argument.*/);
+      }, /Invalid parameter:*/);
     });
   });
 
@@ -197,7 +197,7 @@ describe("given testState", async function () {
   describe("when getStates() is called", function () {
     let testState1;
 
-    beforeEach(function() {
+    beforeEach(function () {
       testState1 = stateManager.getState(defaultStateName, defaultWriterName);
 
       testState1.numberField = 10;
@@ -239,6 +239,55 @@ describe("given testState", async function () {
           },
         });
       });
+    });
+  });
+
+  describe("when replace() is called", function () {
+    it("should replace all states and run existing subscriptions", function () {
+      let testState = stateManager.getState(
+        defaultStateName,
+        defaultWriterName
+      );
+
+      let subscriptionCallCount = 0;
+
+      stateManager.subscribe(defaultStateName, () => subscriptionCallCount++);
+
+      testState.numberField = 10;
+      testState.stringField = "abc";
+
+      let states = stateManager.getStates();
+
+      testState.anotherField = 30;
+
+      stateManager.replace(states);
+
+      assert.equal(subscriptionCallCount, 4);
+    });
+  });
+
+  describe("when replace() is called with invalid states object", function () {
+    it("should throw an error", function () {
+      assert.throws(() => {
+        stateManager.replace(undefined);
+      }, /Invalid parameter:*/);
+    });
+  });
+
+  describe("when replace() is called with non existing state names", function () {
+    it("should throw an error that non existing stateName is provided", function () {
+      assert.throws(() => {
+        let testState = stateManager.getState(
+          defaultStateName,
+          defaultWriterName
+        );
+
+        testState.numberField = 1;
+
+        stateManager.replace({
+          NonExistingStateName: { numberField: 10 },
+        });
+      }, /State not found for name:*/);
     });
   });
 });

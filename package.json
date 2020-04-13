@@ -1,6 +1,6 @@
 {
     "name": "minst",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Minimalistic state management",
     "main": "lib/stateManager.js",
     "type": "module",

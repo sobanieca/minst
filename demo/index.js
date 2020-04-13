@@ -2,7 +2,6 @@ import stateManager from "../lib/stateManager.js";
 
 let loaderState = stateManager.getState("loader", "index.js");
 
-
 let sub1 = stateManager.subscribe("loader", (p, n) => {
     console.log("sub1");
 });
@@ -24,8 +23,6 @@ loaderState.b.c.arr = [34];
 
 console.log("unsubscribing");
 stateManager.unsubscribe("loader", sub1);
-
-loaderState.a = {};
 
 console.log("Available states:");
 console.log(stateManager.getStateNames());
