@@ -46,6 +46,21 @@ stateManager.subscribe("sample", (previousValue, newValue, writerName) => {
 });
 ```
 
+## Remarks
+
+Once you obtain state object via `getState()` method, do not try to replace it:
+
+```
+let state = stateManager.getState("sample");
+state = { field1: 10 };
+```
+
+`getState()` method returns proxy object where each change can be trackable.
+If you replace it with new object, you are loosing change tracking. Not to mention
+that actual state will remain unchanged.
+
+If you want to replace whole state object, use `replaceOne(stateName, value)` method.
+
 # Motivation
 
 Why use minst instead of currently existing state managers?
@@ -56,7 +71,7 @@ and introducing additional layers to your application. With ES6 Javascript
 has changed significantly and it's possible to write complex
 applications without using complex tools. However, it still lacks simple to
 use 'observable' capabilities and that's where minst is supposed to shine.
-It saves you from writing some boilerplate code.
+It saves you from writing boilerplate code.
 
 To summarize:
 

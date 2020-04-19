@@ -290,4 +290,34 @@ describe("given testState", async function () {
       }, /State not found for name:*/);
     });
   });
+
+  describe("when replaceOne() is called with non string state name", function () {
+    it("should throw an error", function () {
+      assert.throws(() => {
+        stateManager.replaceOne(10, { field1: 10 });
+      }, /Invalid parameter: stateName*/);
+    });
+  });
+
+  describe("when replaceOn() is called", function () {
+    it("should replace state value and call subscription only once", function () {
+      let subscriptionCallCount = 0;
+
+      stateManager.subscribe(defaultStateName, () => subscriptionCallCount++);
+
+      stateManager.replaceOne(defaultStateName, {
+        field1: 20,
+        field2: "abc",
+      });
+
+      let testState = stateManager.getState(defaultStateName);
+
+      assert.equal(subscriptionCallCount, 1);
+
+      assert.deepEqual(testState, {
+        field1: 20,
+        field2: "abc",
+      });
+    });
+  });
 });
