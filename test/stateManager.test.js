@@ -1,5 +1,44 @@
 import assert from "assert";
 
+Deno.test("changing-number-value-should-trigger-subscription", () => {
+    
+});
+
+Deno.test("changing-string-value-should-trigger-subscription", () => {
+    
+});
+
+Deno.test("changing-array-value-should-trigger-subscription", () => {
+    
+});
+
+Deno.test("changing-nested-object-should-trigger-subscription", () => {
+    
+});
+
+Deno.test("changing-property-without-writername-should-fail", () => {
+    
+});
+
+Deno.test("multiple-subscriptions-added-should-trigger-all", () => {
+    
+});
+
+Deno.test("non-string-statename-provided-should-fail", () => {
+    
+});
+
+Deno.test("non-function-for-subscribe-should-fail");
+Deno.test("unsubscribing-should-not-call-subscription");
+Deno.test("deleting-state-should-remove-data-and-subscriptions");
+Deno.test("get-states-with-1-states-should-return-1");
+Deno.test("get-states-with-2-states-should-return-2");
+Deno.test("replace-should-replace-and-run-subscriptions");
+Deno.test("replace-with-invalid-object-should-fail");
+Deno.test("replace-with-nonexisting-state-name-should-fail");
+Deno.test("replaceone-with-nonstring-name-should-fail");
+Deno.test("replaceone-should-replace-state");
+
 describe("given testState", async function () {
   const defaultStateName = "test";
   const defaultWriterName = "testWriter";
