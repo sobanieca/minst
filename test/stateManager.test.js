@@ -1,33 +1,16 @@
 import assert from "assert";
 
 Deno.test("changing-number-value-should-trigger-subscription", () => {
-    
+
 });
 
-Deno.test("changing-string-value-should-trigger-subscription", () => {
-    
-});
-
-Deno.test("changing-array-value-should-trigger-subscription", () => {
-    
-});
-
-Deno.test("changing-nested-object-should-trigger-subscription", () => {
-    
-});
-
-Deno.test("changing-property-without-writername-should-fail", () => {
-    
-});
-
-Deno.test("multiple-subscriptions-added-should-trigger-all", () => {
-    
-});
-
-Deno.test("non-string-statename-provided-should-fail", () => {
-    
-});
-
+Deno.test("non-string-statename-provided-should-fail");
+Deno.test("changing-string-value-should-trigger-subscription");
+Deno.test("changing-array-value-should-trigger-subscription");
+Deno.test("changing-nested-object-should-trigger-subscription");
+Deno.test("changing-property-without-writername-should-fail");
+Deno.test("multiple-subscriptions-added-should-trigger-all");
+Deno.test("non-string-statename-provided-should-fail");
 Deno.test("non-function-for-subscribe-should-fail");
 Deno.test("unsubscribing-should-not-call-subscription");
 Deno.test("deleting-state-should-remove-data-and-subscriptions");
