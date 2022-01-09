@@ -46,10 +46,23 @@ Deno.test("changing-string-value-should-trigger-subscription", async () => {
     assertEquals(writerName, defaultWriterName);
 });
 
-//Deno.test("non-string-statename-provided-should-fail");
-//Deno.test("changing-array-value-should-trigger-subscription");
+Deno.test("changing-array-value-should-trigger-subscription", async () => {
+    const stateManager = await getTestStateManager();
+    const testStringValue = "Sample string value";
+
+    let testState = stateManager.getState(defaultStateName, defaultWriterName);
+
+    testState.arrayValue = [ "value1" ];;
+
+    assertEquals(testState.arrayValue, [ "value1" ]);
+    assertEquals(prevValue, {});
+    assertEquals(nextValue, { arrayValue: [ "value1"] });
+    assertEquals(writerName, defaultWriterName);
+});
+
 //Deno.test("changing-nested-object-should-trigger-subscription");
 //Deno.test("changing-property-without-writername-should-fail");
+//Deno.test("non-string-statename-provided-should-fail");
 //Deno.test("multiple-subscriptions-added-should-trigger-all");
 //Deno.test("non-string-statename-provided-should-fail");
 //Deno.test("non-function-for-subscribe-should-fail");
