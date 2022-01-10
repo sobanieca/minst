@@ -18,20 +18,6 @@ let getTestStateManager = async () => {
     return stateManagerModule.default;
 }
 
-Deno.test("changing-number-value-should-trigger-subscription", async () => {
-    const stateManager = await getTestStateManager();
-
-    let testState = stateManager.getState(defaultStateName, defaultWriterName);
-    stateManager.subscribe(defaultStateName, verifyStateChange);
-
-    testState.numberField = 10;
-
-    assert(testState.numberField == 10);
-    assert(prevValue == {});
-    assertEquals(nextValue, { numberField: 10 });
-    assertEquals(writerName, defaultWriterName);
-});
-
 //Deno.test("non-string-statename-provided-should-fail");
 //Deno.test("changing-string-value-should-trigger-subscription");
 //Deno.test("changing-array-value-should-trigger-subscription");

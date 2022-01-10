@@ -3,61 +3,60 @@ import { assert, assertEquals } from "https://deno.land/std@0.119.0/testing/asse
 const defaultStateName = "test";
 const defaultWriterName = "testWriter";
 
-let prevValue, nextValue, writerName;
-const verifyStateChange = (p, n, w) => {
-    prevValue = p;
-    nextValue = n;
-    writerName = w;
-};
-
 let importCounter = 0;
-let getTestStateManager = async () => {
-    let stateManagerModule = await import(
+const getTestStateManager = async () => {
+    const stateManagerModule = await import(
         `../lib/stateManager.js?${importCounter++}`
     );
     return stateManagerModule.default;
 }
 
-Deno.test("changing-number-value-should-trigger-subscription", async () => {
+const getState = async () => {
     const stateManager = await getTestStateManager();
+    const testState = stateManager.getState(defaultStateName, defaultWriterName);
 
-    let testState = stateManager.getState(defaultStateName, defaultWriterName);
+    const stateChangeData = {};
+    const verifyStateChange = (p, n, w) => {
+        stateChangeData.prevValue = p;
+        stateChangeData.nextValue = n;
+        stateChangeData.writerName = w;
+    };
+
     stateManager.subscribe(defaultStateName, verifyStateChange);
+    
+    return { stateManager, testState, stateChangeData };
+}
 
+Deno.test("changing-number-value-should-trigger-subscription", async () => {
+    const { testState, stateChangeData } = await getState(defaultStateName, defaultWriterName);
     testState.numberField = 10;
-
+ 
     assert(testState.numberField == 10);
-    assertEquals(prevValue, {});
-    assertEquals(nextValue, { numberField: 10 });
-    assertEquals(writerName, defaultWriterName);
+    assertEquals(stateChangeData.prevValue, {});
+    assertEquals(stateChangeData.nextValue, { numberField: 10 });
+    assertEquals(stateChangeData.writerName, defaultWriterName);
 });
 
 Deno.test("changing-string-value-should-trigger-subscription", async () => {
-    const stateManager = await getTestStateManager();
+    const { testState, stateChangeData } = await getState(defaultStateName, defaultWriterName);
     const testStringValue = "Sample string value";
-
-    let testState = stateManager.getState(defaultStateName, defaultWriterName);
-
     testState.stringValue = testStringValue;
 
     assert(testState.stringValue == testStringValue);
-    assertEquals(prevValue, {});
-    assertEquals(nextValue, { stringValue: testStringValue });
-    assertEquals(writerName, defaultWriterName);
+    assertEquals(stateChangeData.prevValue, {});
+    assertEquals(stateChangeData.nextValue, { stringValue: testStringValue });
+    assertEquals(stateChangeData.writerName, defaultWriterName);
 });
 
 Deno.test("changing-array-value-should-trigger-subscription", async () => {
-    const stateManager = await getTestStateManager();
-    const testStringValue = "Sample string value";
+    const { testState, stateChangeData } = await getState(defaultStateName, defaultWriterName);
+    testState.arrayValue = [ "value1" ];
 
-    let testState = stateManager.getState(defaultStateName, defaultWriterName);
-
-    testState.arrayValue = [ "value1" ];;
-
-    assertEquals(testState.arrayValue, [ "value1" ]);
-    assertEquals(prevValue, {});
-    assertEquals(nextValue, { arrayValue: [ "value1"] });
-    assertEquals(writerName, defaultWriterName);
+    assert(testState.arrayValue.length == 1);
+    assert(testState.arrayValue[0] == "value1");
+    assertEquals(stateChangeData.prevValue, {});
+    assertEquals(stateChangeData.nextValue, { arrayValue: [ "value1"] });
+    assertEquals(stateChangeData.writerName, defaultWriterName);
 });
 
 //Deno.test("changing-nested-object-should-trigger-subscription");
