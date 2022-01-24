@@ -1,22 +1,25 @@
-import { assert, assertEquals } from "https://deno.land/std@0.119.0/testing/asserts.ts";
+import {
+  assert,
+  assertEquals,
+} from "https://deno.land/std@0.119.0/testing/asserts.ts";
 
 const defaultStateName = "test";
 const defaultWriterName = "testWriter";
 
 let prevValue, nextValue, writerName;
 const verifyStateChange = (p, n, w) => {
-    prevValue = p;
-    nextValue = n;
-    writerName = w;
+  prevValue = p;
+  nextValue = n;
+  writerName = w;
 };
 
 let importCounter = 0;
 let getTestStateManager = async () => {
-    let stateManagerModule = await import(
-        `../lib/stateManager.js?${importCounter++}`
-    );
-    return stateManagerModule.default;
-}
+  let stateManagerModule = await import(
+    `../lib/stateManager.js?${importCounter++}`
+  );
+  return stateManagerModule.default;
+};
 
 //Deno.test("non-string-statename-provided-should-fail");
 //Deno.test("changing-string-value-should-trigger-subscription");
@@ -60,7 +63,7 @@ describe("given testState", async function () {
     it("should trigger subscription", function () {
       let testState = stateManager.getState(
         defaultStateName,
-        defaultWriterName
+        defaultWriterName,
       );
       stateManager.subscribe(defaultStateName, verifyStateChange);
 
@@ -77,7 +80,7 @@ describe("given testState", async function () {
     it("should trigger subscription", function () {
       let testState = stateManager.getState(
         defaultStateName,
-        defaultWriterName
+        defaultWriterName,
       );
       stateManager.subscribe(defaultStateName, verifyStateChange);
 
@@ -94,7 +97,7 @@ describe("given testState", async function () {
     it("should trigger subscription", function () {
       let testState = stateManager.getState(
         defaultStateName,
-        defaultWriterName
+        defaultWriterName,
       );
       stateManager.subscribe(defaultStateName, verifyStateChange);
 
@@ -111,7 +114,7 @@ describe("given testState", async function () {
     it("should trigger subscription", function () {
       let testState = stateManager.getState(
         defaultStateName,
-        defaultWriterName
+        defaultWriterName,
       );
       stateManager.subscribe(defaultStateName, verifyStateChange);
 
@@ -147,7 +150,7 @@ describe("given testState", async function () {
     it("should run all of them on change", function () {
       let testState = stateManager.getState(
         defaultStateName,
-        defaultWriterName
+        defaultWriterName,
       );
 
       let subscriptionCallCount = 0;
@@ -183,14 +186,14 @@ describe("given testState", async function () {
     it("should not call subscription", function () {
       let testState = stateManager.getState(
         defaultStateName,
-        defaultWriterName
+        defaultWriterName,
       );
 
       let subscriptionCallCount = 0;
 
       let subscriptionId = stateManager.subscribe(
         defaultStateName,
-        () => subscriptionCallCount++
+        () => subscriptionCallCount++,
       );
 
       testState.numberField = 10;
@@ -209,7 +212,7 @@ describe("given testState", async function () {
     it("should remove it's data and all subscriptions", function () {
       let testState = stateManager.getState(
         defaultStateName,
-        defaultWriterName
+        defaultWriterName,
       );
 
       let subscriptionCallCount = 0;
@@ -258,7 +261,7 @@ describe("given testState", async function () {
         let defaultStateName2 = defaultStateName + "2";
         let testState2 = stateManager.getState(
           defaultStateName2,
-          defaultWriterName
+          defaultWriterName,
         );
 
         testState2.numberField = 30;
@@ -282,7 +285,7 @@ describe("given testState", async function () {
     it("should replace all states and run existing subscriptions", function () {
       let testState = stateManager.getState(
         defaultStateName,
-        defaultWriterName
+        defaultWriterName,
       );
 
       let subscriptionCallCount = 0;
@@ -315,7 +318,7 @@ describe("given testState", async function () {
       assert.throws(() => {
         let testState = stateManager.getState(
           defaultStateName,
-          defaultWriterName
+          defaultWriterName,
         );
 
         testState.numberField = 1;

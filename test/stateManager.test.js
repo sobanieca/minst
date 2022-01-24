@@ -59,7 +59,9 @@ Deno.test("changing-array-value-should-trigger-subscription", async () => {
     assertEquals(stateChangeData.writerName, defaultWriterName);
 });
 
-//Deno.test("changing-nested-object-should-trigger-subscription");
+Deno.test("changing-nested-object-should-trigger-subscription", async () => {
+  const
+});
 //Deno.test("changing-property-without-writername-should-fail");
 //Deno.test("non-string-statename-provided-should-fail");
 //Deno.test("multiple-subscriptions-added-should-trigger-all");

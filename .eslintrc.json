@@ -1,22 +1,22 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "node": true,
-        "mocha": true
-    },
-    "extends": ["plugin:prettier/recommended", "plugin:jsdoc/recommended"],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaVersion": 2020,
-        "sourceType": "module"
-    },
-    "plugins": ["prettier", "jsdoc"],
-    "rules": {
-        "prettier/prettier": "error",
-        "jsdoc/require-jsdoc": 0
-    }
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "extends": ["plugin:prettier/recommended", "plugin:jsdoc/recommended"],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "plugins": ["prettier", "jsdoc"],
+  "rules": {
+    "prettier/prettier": "error",
+    "jsdoc/require-jsdoc": 0
+  }
 }

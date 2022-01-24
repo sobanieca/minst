@@ -3,15 +3,15 @@ import stateManager from "../lib/stateManager.js";
 let loaderState = stateManager.getState("loader", "index.js");
 
 let sub1 = stateManager.subscribe("loader", (p, n) => {
-    console.log("sub1");
+  console.log("sub1");
 });
 
 let sub2 = stateManager.subscribe("loader", (p, n) => {
-    console.log("sub2");
+  console.log("sub2");
 });
 
 let sub3 = stateManager.subscribe("loader", (p, n) => {
-    console.log("sub3");
+  console.log("sub3");
 });
 
 loaderState.loaders = [];
