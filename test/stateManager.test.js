@@ -1,8 +1,8 @@
 import {
   assert,
   assertEquals,
+  assertRejects,
   assertThrows,
-  assertRejects
 } from "https://deno.land/std@0.119.0/testing/asserts.ts";
 
 const defaultStateName = "test";
@@ -98,18 +98,128 @@ Deno.test("non-string-statename-provided-should-fail", async () => {
 });
 
 Deno.test("multiple-subscriptions-added-should-trigger-all", async () => {
-  const { stateManager, testState, stateChangeData } = await getState(defaultStateName, defaultWriterName);
+  const { stateManager, testState, stateChangeData } = await getState(
+    defaultStateName,
+    defaultWriterName,
+  );
 
-  stateManager.
+  let val = 0;
+  stateManager.subscribe(defaultStateName, () => {
+    val = 10;
+  });
 
+  testState.valueTriggeringSubscription = 100;
+
+  assertEquals(val, 10);
+  assertEquals(stateChangeData.prevValue, {});
+  assertEquals(stateChangeData.nextValue, { valueTriggeringSubscription: 100 });
+  assertEquals(stateChangeData.writerName, defaultWriterName);
 });
 
-//Deno.test("non-string-statename-provided-should-fail");
-//Deno.test("non-function-for-subscribe-should-fail");
-//Deno.test("unsubscribing-should-not-call-subscription");
-//Deno.test("deleting-state-should-remove-data-and-subscriptions");
-//Deno.test("get-states-with-1-states-should-return-1");
-//Deno.test("get-states-with-2-states-should-return-2");
+Deno.test("non-string-statename-provided-should-fail", async () => {
+  await assertRejects(async () => await getState(123), Error, "string");
+});
+
+Deno.test("non-function-for-subscribe-should-fail", async () => {
+  const { stateManager, testState, stateChangeData } = await getState(
+    defaultStateName,
+    defaultWriterName,
+  );
+
+  assertThrows(
+    () => stateManager.subscribe(defaultStateName, "non-function-value"),
+    Error,
+    "function",
+  );
+});
+
+Deno.test("unsubscribing-should-not-call-subscription", async () => {
+  const { stateManager, testState } = await getState(
+    defaultStateName,
+    defaultWriterName,
+  );
+
+  let val = 0;
+
+  const subscriptionId = stateManager.subscribe(defaultStateName, () => {
+    val++;
+  });
+
+  testState.value = "abc";
+
+  stateManager.unsubscribe(defaultStateName, subscriptionId);
+
+  assertEquals(val, 1);
+});
+
+Deno.test("deleting-state-should-remove-data-and-subscriptions", async () => {
+  let { stateManager, testState } = await getState(
+    defaultStateName,
+    defaultWriterName,
+  );
+
+  let subscriptionCallCount = 0;
+
+  stateManager.subscribe(defaultStateName, () => subscriptionCallCount++);
+
+  testState.numberField = 10;
+
+  stateManager.deleteState(defaultStateName);
+
+  testState = stateManager.getState(defaultStateName, defaultWriterName);
+
+  assertEquals(testState.numberField, undefined);
+
+  testState.anotherNumberField = 20;
+
+  assertEquals(subscriptionCallCount, 1);
+});
+
+Deno.test("get-states-with-1-states-should-return-1", async () => {
+  let { stateManager, testState } = await getState(
+    defaultStateName,
+    defaultWriterName,
+  );
+
+  testState.numberField = 10;
+  testState.stringField = "abc";
+  let states = stateManager.getStates();
+
+  assertEquals(states, {
+    [defaultStateName]: {
+      numberField: 10,
+      stringField: "abc",
+    },
+  });
+});
+
+Deno.test("get-states-with-2-states-should-return-2", async () => {
+  let { stateManager, testState } = await getState(
+    defaultStateName,
+    defaultWriterName,
+  );
+
+  testState.numberField = 10;
+  testState.stringField = "abc";
+  let defaultStateName2 = defaultStateName + "2";
+  let testState2 = stateManager.getState(
+    defaultStateName2,
+    defaultWriterName,
+  );
+
+  testState2.numberField = 30;
+
+  let states = stateManager.getStates();
+  assertEquals(states, {
+    [defaultStateName]: {
+      numberField: 10,
+      stringField: "abc",
+    },
+    [defaultStateName2]: {
+      numberField: 30,
+    },
+  });
+});
 //Deno.test("replace-should-replace-and-run-subscriptions");
 //Deno.test("replace-with-invalid-object-should-fail");
 //Deno.test("replace-with-nonexisting-state-name-should-fail");
