@@ -1,7 +1,8 @@
 import {
   assert,
   assertEquals,
-  assertThrows
+  assertThrows,
+  assertRejects
 } from "https://deno.land/std@0.119.0/testing/asserts.ts";
 
 const defaultStateName = "test";
@@ -91,8 +92,18 @@ Deno.test("changing-property-without-writername-should-fail", async () => {
 
   assertThrows(() => testState.value = "value1", Error, "writerName");
 });
-//Deno.test("non-string-statename-provided-should-fail");
-//Deno.test("multiple-subscriptions-added-should-trigger-all");
+
+Deno.test("non-string-statename-provided-should-fail", async () => {
+  await assertRejects(async () => await getState(123), Error, "string");
+});
+
+Deno.test("multiple-subscriptions-added-should-trigger-all", async () => {
+  const { stateManager, testState, stateChangeData } = await getState(defaultStateName, defaultWriterName);
+
+  stateManager.
+
+});
+
 //Deno.test("non-string-statename-provided-should-fail");
 //Deno.test("non-function-for-subscribe-should-fail");
 //Deno.test("unsubscribing-should-not-call-subscription");
