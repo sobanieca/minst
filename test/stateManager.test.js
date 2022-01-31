@@ -220,7 +220,29 @@ Deno.test("get-states-with-2-states-should-return-2", async () => {
     },
   });
 });
-//Deno.test("replace-should-replace-and-run-subscriptions");
+
+Deno.test("replace-should-replace-and-run-subscriptions", async () => {
+   const { stateManager, testState, stateChangeData } = await getState(
+    defaultStateName,
+    defaultWriterName,
+  );
+  const initialStringValue = "Some String value";
+  const testStringValue = "Another string value";
+  testState.stringValue = initialStringValue;
+  
+  const states = { 
+    [defaultStateName]: {
+      stringValue: testStringValue
+    }
+  };
+
+  stateManager.replace(states);
+
+  assertEquals(stateChangeData.prevValue, { stringValue: initialStringValue });
+  assertEquals(stateChangeData.nextValue, { stringValue: testStringValue });
+  assertEquals(stateChangeData.writerName, "replace");
+});
+
 //Deno.test("replace-with-invalid-object-should-fail");
 //Deno.test("replace-with-nonexisting-state-name-should-fail");
 //Deno.test("replaceone-with-nonstring-name-should-fail");
