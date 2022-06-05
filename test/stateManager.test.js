@@ -243,7 +243,59 @@ Deno.test("replace-should-replace-and-run-subscriptions", async () => {
   assertEquals(stateChangeData.writerName, "replace");
 });
 
-//Deno.test("replace-with-invalid-object-should-fail");
-//Deno.test("replace-with-nonexisting-state-name-should-fail");
-//Deno.test("replaceone-with-nonstring-name-should-fail");
-//Deno.test("replaceone-should-replace-state");
+Deno.test("replace-with-invalid-object-should-fail", async () => {
+ const { stateManager } = await getState(
+    defaultStateName,
+    defaultWriterName,
+  ); 
+
+  assertThrows(
+    () => stateManager.replace(undefined),
+    Error,
+    "structure"
+  );
+});
+
+Deno.test("replace-with-nonexisting-state-name-should-fail", async () => {
+ const { stateManager } = await getState(
+    defaultStateName,
+    defaultWriterName,
+  ); 
+
+  assertThrows(
+    () => stateManager.replace({
+      nonExistingStateName: { numberField: 10 }
+    }),
+    Error,
+    "State not found for name:"
+  );
+});
+
+Deno.test("replaceone-with-nonstring-name-should-fail", async () => {
+  const { stateManager } = await getState(
+    defaultStateName,
+    defaultWriterName,
+  ); 
+
+  assertThrows(
+    () => stateManager.replaceOne(10, { field1: 10 }),
+    Error,
+    "Invalid parameter: stateName"
+  ); 
+});
+
+Deno.test("replaceone-should-replace-state", async () => {
+  const { stateManager, testState, stateChangeData } = await getState(
+    defaultStateName,
+    defaultWriterName,
+  );
+  const initialStringValue = "Some String value";
+  const testStringValue = "Another string value";
+  testState.stringValue = initialStringValue;
+  
+  stateManager.replaceOne(defaultStateName, { stringValue: testStringValue });
+
+  assertEquals(stateChangeData.prevValue, { stringValue: initialStringValue });
+  assertEquals(stateChangeData.nextValue, { stringValue: testStringValue });
+  assertEquals(stateChangeData.writerName, "replaceOne");
+});
